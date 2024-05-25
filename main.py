@@ -1,6 +1,7 @@
 import sys
 from random import randint, choice
 import pygame
+import time
 
 pygame.init()
 
@@ -16,6 +17,7 @@ window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption("Test Pygame")
 background = pygame.image.load("back.jpg")
 player = pygame.image.load("player.png")
+
 
 class Enemy:
     def __init__(self):
@@ -49,6 +51,7 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+
     if not game_over:
         keys = pygame.key.get_pressed()
 
@@ -61,19 +64,22 @@ while running:
         if keys[pygame.K_s] and player_y < WINDOW_HEIGHT - player_height:
             player_y += player_speed
 
-        for enemy in enemies:
-            enemy.draw()
+    for enemy in enemies:
+        enemy.draw()
+        enemy.x = randint(0, 850)
+        enemy.y = randint(0, 550)
+        time.sleep(5)
 
-            if player_x < enemy.x + enemy.width and player_x + player_width > enemy.x \
-                    and player_y < enemy.y + enemy.height and player_y + player_height > enemy.y:
-                if enemy.color == BLUE and not enemy.touch:
-                    score -= 100
-                    enemy.touch = True
-                    if score < 0:
-                        game_over = True
-                if enemy.color == GREEN and not enemy.touch:
-                    score += 100
-                    enemy.touch = True
+        if player_x < enemy.x + enemy.width and player_x + player_width > enemy.x \
+                and player_y < enemy.y + enemy.height and player_y + player_height > enemy.y:
+            if enemy.color == BLUE and not enemy.touch:
+                score -= 100
+                enemy.touch = True
+                if score < 0:
+                    game_over = True
+            if enemy.color == GREEN and not enemy.touch:
+                score += 100
+                enemy.touch = True
 
     else:
         font = pygame.font.Font(None, 74)
