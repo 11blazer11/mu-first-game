@@ -1,5 +1,5 @@
 import sys
-from random import randint, choice
+from random import randint
 import pygame
 import time
 
@@ -15,25 +15,34 @@ WHITE = (255, 255, 255)
 
 window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption("Test Pygame")
+pygame.display.set_icon(pygame.image.load("gameicon.png"))
 background = pygame.image.load("back.jpg")
 player = pygame.image.load("player.png")
+random = pygame.image.load("random.png")
+enemy = pygame.image.load("enemy.png")
+good = pygame.image.load("good.png")
 
 
 class Enemy:
-    def __init__(self):
-        self.width = 50
-        self.height = 50
+    def __init__(self, enemy_type):
+        self.enemy_type = enemy_type
+        if enemy_type == "enemy":
+            self.image = pygame.image.load("enemy.png")
+        else:
+            self.image = pygame.image.load("random.png")
+
+        self.width = self.image.get_width()
+        self.height = self.image.get_height()
         self.x = randint(0, WINDOW_WIDTH - self.width)
         self.y = randint(0, WINDOW_HEIGHT - self.height)
-        self.color = choice([GREEN, BLUE])
-        self.speed = choice([2, 3, 4])
         self.touch = False
 
     def draw(self):
-        pygame.draw.rect(window, self.color, (self.x, self.y, self.width, self.height))
+        window.blit(self.image, (self.x, self.y))
 
 
-enemies = [Enemy() for _ in range(7)]
+enemies = [Enemy("enemy") for _ in range(4)]
+goods = [Enemy("good") for _ in range(3)]
 
 player_width = 50
 player_height = 50
@@ -72,19 +81,19 @@ while running:
 
         if player_x < enemy.x + enemy.width and player_x + player_width > enemy.x \
                 and player_y < enemy.y + enemy.height and player_y + player_height > enemy.y:
-            if enemy.color == BLUE and not enemy.touch:
+            if enemy.enemy_type == "enemy" and not enemy.touch:
                 score -= 100
                 enemy.touch = True
-                if score < 0:
-                    game_over = True
-            if enemy.color == GREEN and not enemy.touch:
+            if score < 0:
+                game_over = True
+            if enemy.enemy_type == "good" and not enemy.touch:
                 score += 100
                 enemy.touch = True
 
-    else:
-        font = pygame.font.Font(None, 74)
-        text = font.render("Game Over", True, RED)
-        window.blit(text, (200, 250))
+        else:
+            font = pygame.font.Font(None, 74)
+            text = font.render("Game Over", True, RED)
+            window.blit(text, (200, 250))
 
     font = pygame.font.Font(None, 74)
     text = font.render(f"score: {score}", True, WHITE)
@@ -94,7 +103,7 @@ while running:
 
     pygame.display.update()
 
-    pygame.time.Clock().tick(120)
+    pygame.time.Clock().tick(60)
 
 pygame.quit()
 sys.exit()
