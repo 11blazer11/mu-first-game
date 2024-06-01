@@ -29,7 +29,7 @@ class Enemy:
         if enemy_type == "enemy":
             self.image = pygame.image.load("enemy.png")
         else:
-            self.image = pygame.image.load("random.png")
+            self.image = pygame.image.load("good.png")
 
         self.width = self.image.get_width()
         self.height = self.image.get_height()
