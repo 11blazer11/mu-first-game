@@ -19,6 +19,7 @@ background = pygame.image.load("back.jpg")
 player_img = pygame.image.load("player.png")
 enemy_img = pygame.image.load("enemy.png")
 good_img = pygame.image.load("good.png")
+random = pygame.image.load("random.png")
 
 
 class Enemy:
@@ -36,7 +37,7 @@ class Enemy:
         self.y = randint(0, WINDOW_HEIGHT - self.height)
         self.touch = False
 
-    def move(self):  # ფუნქცია მტრების ასამოძრავებლად
+    def move(self):
         self.x += self.speed
         if self.x > WINDOW_WIDTH:
             self.x = -self.width
@@ -81,7 +82,7 @@ while running:
         if keys[pygame.K_s] and player_y < WINDOW_HEIGHT - player_height:
             player_y += player_speed
 
-        for enemy in enemies + goods:  # აქ უნდა წავშალოთ sleep და დავწეროთ მტრების გამოჩენა ეკრანზე და მათი მოძრაობის ფუნქცია
+        for enemy in enemies + goods:
             enemy.draw()
             enemy.move()
 
@@ -97,10 +98,14 @@ while running:
             if score < 0:
                 game_over = True
 
+            if score == 500:
+                window.blit(random,(randint(900, 600), randint(900,600)))
+
     else:
         font = pygame.font.Font(None, 74)
         text = font.render("Game Over", True, RED)
         window.blit(text, (200, 250))
+
 
     font = pygame.font.Font(None, 74)
     text = font.render(f"score: {score}", True, WHITE)
