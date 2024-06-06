@@ -36,7 +36,7 @@ class Enemy:
         self.y = randint(0, WINDOW_HEIGHT - self.height)
         self.touch = False
 
-    def move(self):
+    def move(self):  # ფუნქცია მტრების ასამოძრავებლად
         self.x += self.speed
         if self.x > WINDOW_WIDTH:
             self.x = -self.width
@@ -81,7 +81,7 @@ while running:
         if keys[pygame.K_s] and player_y < WINDOW_HEIGHT - player_height:
             player_y += player_speed
 
-        for enemy in enemies + goods:
+        for enemy in enemies + goods:  # აქ უნდა წავშალოთ sleep და დავწეროთ მტრების გამოჩენა ეკრანზე და მათი მოძრაობის ფუნქცია
             enemy.draw()
             enemy.move()
 
