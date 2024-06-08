@@ -1,5 +1,5 @@
 import sys
-from random import randint
+from random import randint, choice
 import pygame
 
 pygame.init()
@@ -27,8 +27,10 @@ class Enemy:
         self.enemy_type = enemy_type
         if enemy_type == "enemy":
             self.image = enemy_img
-        else:
+        if enemy_type == "good":
             self.image = good_img
+        if enemy_type == "random":
+            self.image = random
 
         self.width = self.image.get_width()
         self.height = self.image.get_height()
@@ -99,13 +101,17 @@ while running:
                 game_over = True
 
             if score == 500:
-                window.blit(random,(randint(900, 600), randint(900,600)))
+                x = 450
+                y = 300
+                window.blit(random, (x, y))
+                if player_x < random.x + random.width and player_x + player_width > random.x \
+                        and player_y < random.y + random.height and player_y + player_height > random.y:
+                    score = choice([score - 300, score + 300])
 
     else:
         font = pygame.font.Font(None, 74)
         text = font.render("Game Over", True, RED)
         window.blit(text, (200, 250))
-
 
     font = pygame.font.Font(None, 74)
     text = font.render(f"score: {score}", True, WHITE)
