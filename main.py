@@ -108,6 +108,7 @@ while running:
                     and player_y < enemy.y + enemy.height and player_y + player_height > enemy.y:
                 if enemy.enemy_type == "random" and not enemy.touch:
                     score = choice([score - 300, score + 300])
+                    enemy.touch = True
 
     else:
         font = pygame.font.Font(None, 74)
