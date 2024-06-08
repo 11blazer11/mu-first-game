@@ -104,8 +104,9 @@ while running:
                 x = 450
                 y = 300
                 window.blit(random, (x, y))
-                if player_x < random.x + random.width and player_x + player_width > random.x \
-                        and player_y < random.y + random.height and player_y + player_height > random.y:
+            if player_x < enemy.x + enemy.width and player_x + player_width > enemy.x \
+                    and player_y < enemy.y + enemy.height and player_y + player_height > enemy.y:
+                if enemy.enemy_type == "random" and not enemy.touch:
                     score = choice([score - 300, score + 300])
 
     else:
