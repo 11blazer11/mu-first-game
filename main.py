@@ -93,22 +93,18 @@ while running:
                 if enemy.enemy_type == "enemy" and not enemy.touch:
                     score -= 100
                     enemy.touch = True
-                elif enemy.enemy_type == "good" and not enemy.touch:
+                if enemy.enemy_type == "good" and not enemy.touch:
                     score += 100
+                    enemy.touch = True
+                if enemy.enemy_type == "random" and not enemy.touch:
+                    score += choice([score - 300, score + 300])
                     enemy.touch = True
 
             if score < 0:
                 game_over = True
 
             if score == 500:
-                x = 450
-                y = 300
-                window.blit(random, (x, y))
-            if player_x < enemy.x + enemy.width and player_x + player_width > enemy.x \
-                    and player_y < enemy.y + enemy.height and player_y + player_height > enemy.y:
-                if enemy.enemy_type == "random" and not enemy.touch:
-                    score = choice([score - 300, score + 300])
-                    enemy.touch = True
+                window.blit(random, (450, 300))
 
     else:
         font = pygame.font.Font(None, 74)
