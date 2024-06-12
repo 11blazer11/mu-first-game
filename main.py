@@ -27,10 +27,8 @@ class Enemy:
         self.enemy_type = enemy_type
         if enemy_type == "enemy":
             self.image = enemy_img
-        if enemy_type == "good":
+        else:
             self.image = good_img
-        if enemy_type == "random":
-            self.image = random
 
         self.width = self.image.get_width()
         self.height = self.image.get_height()
@@ -50,8 +48,22 @@ class Enemy:
         window.blit(self.image, (self.x, self.y))
 
 
+class RandomSprite:
+    def __init__(self):
+        self.image = random
+        self.width = self.image.get_width()
+        self.height = self.image.get_height()
+        self.x = randint(0, WINDOW_WIDTH - self.width)
+        self.y = randint(0, WINDOW_HEIGHT - self.height)
+        self.touch = False
+
+    def draw(self):
+        window.blit(self.image, (self.x, self.y))
+
+
 enemies = [Enemy("enemy") for _ in range(4)]
 goods = [Enemy("good") for _ in range(3)]
+random_sprite = RandomSprite()
 
 player_width = player_img.get_width()
 player_height = player_img.get_height()
@@ -93,21 +105,22 @@ while running:
                 if enemy.enemy_type == "enemy" and not enemy.touch:
                     score -= 100
                     enemy.touch = True
-                if enemy.enemy_type == "good" and not enemy.touch:
+                elif enemy.enemy_type == "good" and not enemy.touch:
                     score += 100
                     enemy.touch = True
-                if enemy.enemy_type == "random" and not enemy.touch:
-                    scorex = choice(["a", "b"])
-                    if scorex == "a":
-                        score += 300
-                    elif scorex == "b":
-                        score -= 400
 
             if score < 0:
                 game_over = True
 
-            if score == 500:
-                window.blit(random, (450, 300))
+        if 500 <= score <= 600:
+            random_sprite.draw()
+
+        if player_x < random_sprite.x + random_sprite.width and player_x + player_width > random_sprite.x \
+                and player_y < random_sprite.y + random_sprite.height and player_y + player_height > random_sprite.y:
+            if not random_sprite.touch:
+                score_change = choice([-50, 50])
+                score += score_change
+                random_sprite.touch = True
 
     else:
         font = pygame.font.Font(None, 74)
