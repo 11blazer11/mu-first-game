@@ -97,10 +97,10 @@ while running:
                     score += 100
                     enemy.touch = True
                 if enemy.enemy_type == "random" and not enemy.touch:
-                    score = choice(["a", "b"])
-                    if score == "a":
+                    scorex = choice(["a", "b"])
+                    if scorex == "a":
                         score += 300
-                    elif score == "b":
+                    elif scorex == "b":
                         score -= 400
 
             if score < 0:
