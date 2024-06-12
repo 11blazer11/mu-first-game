@@ -97,8 +97,11 @@ while running:
                     score += 100
                     enemy.touch = True
                 if enemy.enemy_type == "random" and not enemy.touch:
-                    score += choice([score - 300, score + 300])
-                    enemy.touch = True
+                    score = choice(["a", "b"])
+                    if score == "a":
+                        score += 300
+                    elif score == "b":
+                        score -= 400
 
             if score < 0:
                 game_over = True
