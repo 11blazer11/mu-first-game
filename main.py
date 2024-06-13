@@ -23,7 +23,7 @@ random = pygame.image.load("random.png")
 
 
 class Enemy:
-    def __init__(self, enemy_type):
+    def __init__(self, enemy_type,):
         self.enemy_type = enemy_type
         if enemy_type == "enemy":
             self.image = enemy_img
@@ -62,7 +62,7 @@ class RandomSprite:
 
 
 enemies = [Enemy("enemy") for _ in range(4)]
-goods = [Enemy("good") for _ in range(3)]
+goods = [Enemy("good") for _ in range(4)]
 random_sprite = RandomSprite()
 
 player_width = player_img.get_width()
@@ -74,6 +74,7 @@ player_speed = 5
 score = 0
 game_over = False
 running = True
+game_won = False
 
 clock = pygame.time.Clock()
 
@@ -84,7 +85,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    if not game_over:
+    if not game_over and not game_won:
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_a] and player_x > 0:
@@ -112,17 +113,27 @@ while running:
             if score < 0:
                 game_over = True
 
-        if 500 <= score <= 600:
+        if 500 <= score < 550:
             random_sprite.draw()
 
         if player_x < random_sprite.x + random_sprite.width and player_x + player_width > random_sprite.x \
                 and player_y < random_sprite.y + random_sprite.height and player_y + player_height > random_sprite.y:
             if not random_sprite.touch:
-                score_change = choice([-50, 50])
+                score_change = choice([-350, 350])
                 score += score_change
                 random_sprite.touch = True
 
-    else:
+        if score >= 1000:
+            for enemy in enemies:
+                enemy.speed = 3.5
+
+    if score >= 2000:
+        font = pygame.font.Font(None, 74)
+        text = font.render("You won", True, RED)
+        window.blit(text, (200, 250))
+        game_won = True
+
+    if score <= -100:
         font = pygame.font.Font(None, 74)
         text = font.render("Game Over", True, RED)
         window.blit(text, (200, 250))
