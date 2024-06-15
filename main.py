@@ -1,9 +1,9 @@
 import sys
 from random import randint, choice
 import pygame
-import pyglet
 
 pygame.init()
+pygame.mixer.init()
 
 WINDOW_WIDTH = 900
 WINDOW_HEIGHT = 600
@@ -22,9 +22,11 @@ enemy_img = pygame.image.load("enemy.png")
 good_img = pygame.image.load("good.png")
 random = pygame.image.load("random.png")
 
+lose_sound = pygame.mixer.Sound("lose.mp3")
+win_sound = pygame.mixer.Sound("won.mp3")
 
 class Enemy:
-    def __init__(self, enemy_type,):
+    def __init__(self, enemy_type):
         self.enemy_type = enemy_type
         if enemy_type == "enemy":
             self.image = enemy_img
@@ -48,7 +50,6 @@ class Enemy:
     def draw(self):
         window.blit(self.image, (self.x, self.y))
 
-
 class RandomSprite:
     def __init__(self):
         self.image = random
@@ -60,7 +61,6 @@ class RandomSprite:
 
     def draw(self):
         window.blit(self.image, (self.x, self.y))
-
 
 enemies = [Enemy("enemy") for _ in range(4)]
 goods = [Enemy("good") for _ in range(4)]
@@ -112,9 +112,7 @@ while running:
                     enemy.touch = True
 
             if score < 0:
-                mus = pyglet.resource.media("lose.mp3")
-                mus.play()
-                pyglet.app.run()
+                lose_sound.play()
                 game_over = True
 
         if 500 <= score < 550:
@@ -134,9 +132,7 @@ while running:
         font = pygame.font.Font(None, 74)
         text = font.render("You won", True, BLUE)
         window.blit(text, (200, 250))
-        mus = pyglet.resource.media("won.mp3")
-        mus.play()
-        pyglet.app.run()
+        win_sound.play()
         game_won = True
 
     if score <= -100:
