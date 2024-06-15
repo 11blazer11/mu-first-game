@@ -1,6 +1,7 @@
 import sys
 from random import randint, choice
 import pygame
+import pyglet
 
 pygame.init()
 
@@ -111,11 +112,13 @@ while running:
                     enemy.touch = True
 
             if score < 0:
+                mus = pyglet.resource.media("lose.mp3")
+                mus.play()
+                pyglet.app.run()
                 game_over = True
 
         if 500 <= score < 550:
             random_sprite.draw()
-
         if player_x < random_sprite.x + random_sprite.width and player_x + player_width > random_sprite.x \
                 and player_y < random_sprite.y + random_sprite.height and player_y + player_height > random_sprite.y:
             if not random_sprite.touch:
@@ -129,8 +132,11 @@ while running:
 
     if score >= 2000:
         font = pygame.font.Font(None, 74)
-        text = font.render("You won", True, RED)
+        text = font.render("You won", True, BLUE)
         window.blit(text, (200, 250))
+        mus = pyglet.resource.media("won.mp3")
+        mus.play()
+        pyglet.app.run()
         game_won = True
 
     if score <= -100:
